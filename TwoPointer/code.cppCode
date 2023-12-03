@@ -1,0 +1,145 @@
+#include <stdio.h>
+#include <vector>
+
+// Pairs with Given Difference
+int PairswithGivenDifference(vector<int> &nums, int k) {
+   unordered_map<int,int> mp;
+        int ans = 0;
+        if(k < 0) 
+            return 0;
+        for(int num:nums)
+        {
+            if(k == 0 && mp[num] == 1)
+            {
+                ans++;
+            }
+            else if(k > 0 && mp[num] == 0)
+            {
+                ans += mp.count(num - k) + mp.count(num + k);
+            }
+            mp[num]++;
+        }
+        return ans;
+}
+
+
+//3 Sum
+int threeSumClosest(vector<int> &A, int B) {
+    sort(A.begin(),A.end());
+        int front;
+        int sum=A[0]+A[1]+A[2],sum1=0;
+        for(int i=0;i<A.size();i++){
+            front=i+1;
+            int back=A.size()-1;
+            while(front<back){
+            sum1=A[front]+A[back]+A[i];
+            if(abs(sum1-B)<=abs(sum-B)){
+                sum=sum1;
+            }
+            if(sum1>B) 
+                back--;
+            else if(sum1<B) 
+               front++;
+            else return sum1;
+            }
+        }
+        return sum;
+}
+
+// Closest pair from sorted arrays
+vector<int>  Closestpairfromsortedarrays(vector<int> &A, vector<int> &B, int C) {
+   int diff = INT_MAX; 
+    int m = A.size();
+    int n = B.size();
+  	int res_l, res_r; 
+     
+    int l = 0, r = n-1; 
+    while (l<m && r>=0) 
+    {        
+       if (abs(A[l] + B[r] - C) < diff) 
+       { 
+           res_l = l; 
+           res_r = r; 
+           diff = abs(A[l] + B[r] - C); 
+       } 
+       else if(abs(A[l] + B[r] - C) == diff)
+       {
+			if(l < res_l)
+           	{
+			res_l = l; 
+            res_r = r; 
+            diff = abs(A[l] + B[r] - C); 
+        	}
+            else if(l == res_l)
+           	{               
+               if(r < res_r)
+               {
+				res_l = l; 
+                res_r = r; 
+                diff = abs(A[l] + B[r] - C); 
+                }
+            }
+        }  
+       // If sum of this pair is more than c, move to smaller 
+       // side 
+       if (A[l] + B[r] > C) 
+           r--; 
+       else  // move to the greater side 
+           l++; 
+    }   
+    vector<int> ans;
+    ans.push_back(A[res_l]);
+    ans.push_back(B[res_r]);
+    return ans;
+}
+
+//Another Count Rectangles
+int AnotherCountRectangles(vector<int> &A, int B) {
+    long mod = 1000000007, ans = 0;
+    int l = 0, r = A.size() - 1;
+    while (l < A.size() && r >= 0)
+    {
+        if (1l * A[l] * A[r] >= B)
+        {
+            r--;
+        }
+        else
+        {
+            ans = (ans % mod + (r + 1) % mod) % mod;
+            l++;
+        }
+    }
+    return int(ans % mod);
+}
+
+vector<int> MaxContinuousSeriesof1s(vector<int> &A, int B) {
+    int n = A.size();
+    int wL = 0, wR = 0;
+    int bestL = 0, bestWindow = 0;
+    int zeroCount = 0;
+    while (wR < n) {
+        if (zeroCount <= B) {
+            if (A[wR] == 0)
+                zeroCount++;
+            wR++;
+        }
+       
+        if (zeroCount > B) {
+            if (A[wL] == 0)
+                zeroCount--;
+            wL++;
+        }
+
+        // Updqate widest window if this window size is more
+        if (wR - wL > bestWindow) {
+            bestWindow = wR - wL;
+            bestL = wL;
+        }
+    }
+    vector<int> best;
+    for (int i = 0; i < bestWindow; i++) {
+        best.push_back(bestL + i);
+    }
+    return best;
+}
+

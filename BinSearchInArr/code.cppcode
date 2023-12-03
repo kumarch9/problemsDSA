@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <vector>
+//Find a peak element
+// Given an array of integers A, find and return the peak element in it.
+// An array element is considered a peak if it is not smaller than its neighbors. For corner elements,
+//  we need to consider only one neighbor.
+// NOTE:
+// It is guaranteed that the array contains only a single peak element.
+// Users are expected to solve this in O(log(N)) time. The array may contain duplicate elements
+int Findpeakelement(vector<int> &A) {
+   int low = 0, high = A.size() - 1;
+        while (low < high) {
+            int mid = (low + high)  / 2;
+
+            if (A[mid] < A[mid + 1]) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return A[low];
+}
+
+//Minimum Difference
+int helperBS(int s, int e, int n, vector<int> &arr) 
+{ 
+    int mid = (s + e)/2; 
+    if(s <= e) 
+    { 
+        if(arr[mid] < n) 
+        {
+            return helperBS(mid +1, e, n, arr); 
+        }
+        return helperBS(s, mid - 1, n, arr); 
+    } 
+    return s; 
+} 
+
+
+//Maximum height of staircase
+// Given an integer A representing the number of square blocks. The height of each square block is 1.
+//  The task is to create a staircase of max-height using these blocks.
+// The first stair would require only one block, and the second stair would require two blocks, 
+// and so on.
+// Find and return the maximum height of the staircase.
+int MinimumDifference(int A, int B, vector<vector<int> > &C) {
+    //sort allrows
+    for (int i = 0; i < A; i++) 
+    {
+         sort(C[i].begin(), C[i].end()); 
+    }
+    int ans = INT_MAX; 
+    for (int i = 0; i < A - 1; i++) 
+    { 
+        for (int j = 0; j < B; j++) 
+        { 
+            int p = helperBS(0, B-1, C[i][j], C[i + 1]); 
+            ans = min(ans, abs(C[i + 1][p] - C[i][j])); 
+            if (p-1 >= 0) 
+            {
+                 ans = min(ans, abs(C[i + 1][p - 1] - C[i][j])); 
+            }
+               
+        } 
+    } 
+    return ans;
+}
+int Maximumheightstaircase(int A) {
+    int k = sqrt(2*A);
+    if(k==0)
+        return 0;
+    if(A-k*(k+1)/2>=0)
+        return k;
+    else
+        return k-1;
+}

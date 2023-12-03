@@ -1,0 +1,22 @@
+import java.util.Arrays;
+
+
+
+//Unique Elements
+// You are given an array A of N elements. You have to make all elements unique. To do so,
+//  in one step you can increase any number by one.
+// Find the minimum number of steps.
+public class Solution {
+    public int UniqueElements(int[] A) {
+        Arrays.sort(A);
+        int cnt = 0;
+        for (int i = 1; i < A.length; i++) {
+            while (A[i] <= A[i-1]){
+                A[i] = A[i] + 1;
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+}
+

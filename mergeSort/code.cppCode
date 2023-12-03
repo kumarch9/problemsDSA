@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <vector>
+using namespace std;
+
+//Count Inversions
+// Given an array of integers. Find the Inversion Count in the array.
+// Inversion Count: For an array, inversion count indicates how far (or close) the array is
+//  from being sorted. If array is already sorted then the inversion count is 0. If an array
+//   is sorted in the reverse order then the inversion count is the maximum. Formally, two 
+//   elements a[i] and a[j] form an inversion if a[i] > a[j] and i < j.
+int countPairGivenIndices(vector<int> &A ,int l,int y,int r )
+{
+    int  C[r-l+1] ;
+	int i = l, j = y+1, k = 0 ; 
+    int	count = 0 ;
+	while (i <= y && j <= r )
+	{
+		if ( A[i] <= A[j]) {
+			C[k] = A[i] ;
+			k++ ;
+			i++ ;
+		} else 
+		{
+			//A[i] > A[j]
+			C[k] = A[j] ;
+			count += y - i + 1 ;
+			k++ ;
+			j++ ;
+		}
+	}
+	//remain values bind
+	while (i <= y) 
+	{
+		C[k] = A[i];
+		k++;
+		i++;
+	}
+	while( j <= r )
+	{
+		C[k] = A[j];
+		k++;
+		j++;
+	}
+	//copy c array
+	i = l;
+	k = 0;
+	while (i <= r )
+	{
+		A[i] = C[k];
+		i++;
+		k++;
+	}
+	return count;
+}
+
+int inverseCount(vector<int> &A,int l,int r )
+{
+	if (l == r)
+	{
+		return 0;
+	}
+    int inv = 0 ;
+
+	int mid = (l + r) / 2 ;
+	inv += inverseCount(A, l, mid) % 1000000007 ;
+	inv += inverseCount(A, mid+1, r) % 1000000007 ;
+	inv += countPairGivenIndices(A, l, mid, r) % 1000000007 ;
+	return inv % 1000000007 ;
+}
+int getInvCount(vector<int> &arr, int n)
+{
+    int sz = n;
+	int l = 0;
+	int r = sz - 1;
+	int x = inverseCount(arr, l, r);
+	return x % 1000000007;
+}
